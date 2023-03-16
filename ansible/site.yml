@@ -1,0 +1,3 @@
+---
+- import_playbook: test_ocp_auth.yml
+- import_playbook: log4shell_app.yml
