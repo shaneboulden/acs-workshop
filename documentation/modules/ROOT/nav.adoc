@@ -8,6 +8,7 @@
 ** xref:02-getting_started#deploy_demo_acs[Deploying Demo in RHACS]
 ** xref:02-getting_started#deploy_apps[Deploying Apps]
 
+
 * xref:03-overview-acs.adoc[RHACS Overview]
 ** xref:03-overview-acs.adoc#acs_architecture[RHACS Architecture]
 ** xref:03-overview-acs.adoc#dashboard_acs[RHACS Dashboard]
@@ -23,24 +24,31 @@
 ** xref:04-vulnerabilities#review_cve_images[Image CVE Vulnerability Analysis]
 ** xref:04-vulnerabilities#image_correlation_deployments[Image CVE correlation with Deployments]
 
+////
 * xref:05-risk.adoc[Risk Management]
 ** xref:05-risk.adoc#risk_dashboard[Review Risk Dashboard]
 ** xref:05-risk.adoc#risk_single_deployment_details[Single Deployment Details]
 ** xref:05-risk.adoc#risk_process_discovery[Process Discovery / Runtime]
 ** xref:05-risk.adoc#risk_filtering[Filtering]
+////
 
+////
 * xref:06-network_graph.adoc[Network Graph]
 ** xref:06-network_graph.adoc#network_graph_overview[Network Graph Overview]
 ** xref:06-network_graph.adoc#network_graph_views[Network Graph Views]
 ** xref:06-network_graph.adoc#network_policy_simulator[Network Policy Simulator]
+////
 
+////
 * xref:07-violations.adoc[Violations]
 ** xref:07-violations.adoc#violations_overview[Violations Dashboard Overview]
 ** xref:07-violations.adoc#violations_example[Violations Build & Deploy Example]
 ** xref:07-violations.adoc#violations_runtime[Violations Runtime Example]
 ** xref:07-violations.adoc#violations_behaviour[Violations Behaviour]
 ** xref:07-violations.adoc#policy_summary[Policy Summary]
+////
 
+////
 * xref:08-compliance.adoc[Compliance]
 ** xref:08-compliance.adoc#compliance_dashboard[Review Compliance Dashboard]
 ** xref:08-compliance.adoc#compliance_dashboard_scan[Execute the first Compliance Scan]
@@ -53,37 +61,49 @@
 ** xref:08-compliance.adoc#acs_policy_compliance_nist[Enforce Policies that Meet Guidance for NIST Control 4.2.2]
 ** xref:08-compliance.adoc#acs_policy_compliance_nist_view[View Updated Compliance Scan Results in RHACS]
 ** xref:08-compliance.adoc#acs_policy_compliance_nist_revert[Revert the Policy Changes]
+////
 
+////
 * xref:09-configuration_management.adoc[Configuration Management]
 ** xref:09-configuration_management.adoc#conf_management_overview[Configuration Management Overview]
 ** xref:09-configuration_management.adoc#conf_management_cis[Configuration Management CIS]
+////
 
+////
 * xref:10-system_policies.adoc[System Policies]
 ** xref:10-system_policies.adoc#system_policies_overview[System Policies Overview]
 ** xref:10-system_policies.adoc#system_policies_example[System Policies Build and Deploy Example]
 ** xref:10-system_policies.adoc#system_policies_enforcement[System Policies Enforcement]
+////
 
+////
 * xref:11-integrations.adoc[RHACS Integrations]
 ** xref:11-integrations.adoc#integrate_with_internal_openshift_registry[Integrate with Internal Openshift Registry]
 *** xref:11-integrations.adoc#integrate_with_internal_openshift_registry_config_acs[Configure RHACS integration for Internal Openshift Registry]
 ** xref:11-integrations.adoc#integrate_acs_slack[Integrate RHACS with Slack]
 ** xref:11-integrations.adoc#integrate_acs_oauth[Integrate RHACS with OpenShift OAuth]
 ** xref:11-integrations.adoc#integrate_acs_sso[Integrate RHACS with OpenShift RHSSO]
+////
 
+////
 * xref:12-platform_configuration.adoc[RHACS Secure Cluster Management]
 ** xref:12-platform_configuration.adoc#clusters[RHACS Secured Clusters]
 ** xref:12-platform_configuration.adoc#clusters_vuln[Add vulnerabilities to the Secured Cluster]
 ** xref:12-platform_configuration.adoc#system_configuration[RHACS System Configuration]
 ** xref:12-platform_configuration.adoc#system_health[RHACS System Health]
 ** xref:12-platform_configuration.adoc#access_control[RHACS Access Control]
+////
 
+////
 * xref:13-cicd.adoc[DevSecOps Pipelines]
 ** xref:13-cicd#install_devsecops_pipelines[Installing RHACS DevSecOps Pipeline]
 ** xref:13-cicd#run_devsecops_pipelines[Running the demo of DevSecOps Pipeline]
+////
 
+////
 * xref:14-apicli.adoc[RHACS API and CLI]
 ** xref:14-apicli.adoc#cli-overview[RHACS CLI Overview]
 ** xref:14-apicli.adoc#cli-integration[RHACS CLI Integration]
 ** xref:14-apicli.adoc#api-overview[RHACS API Overview]
-
+////
 * xref:15-contributors.adoc[Contributors]
