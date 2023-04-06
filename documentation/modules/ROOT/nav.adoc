@@ -1,13 +1,16 @@
+////
 * xref:01-setup.adoc[Setup]
 ** xref:01-setup.adoc#prerequisite[Prerequisites]
+////
 
+////
 * xref:02-getting_started.adoc[Getting Started]
 ** xref:02-getting_started#install_acs_operator[Install RHACS Operator]
 ** xref:02-getting_started#install_acs_central[Install RHACS Central Cluster]
 ** xref:02-getting_started#config_acs_securedcluster[Configuration of the RHACS Secured Cluster ]
 ** xref:02-getting_started#deploy_demo_acs[Deploying Demo in RHACS]
 ** xref:02-getting_started#deploy_apps[Deploying Apps]
-
+////
 
 * xref:03-overview-acs.adoc[RHACS Overview]
 ** xref:03-overview-acs.adoc#acs_architecture[RHACS Architecture]
@@ -32,12 +35,10 @@
 ** xref:05-risk.adoc#risk_filtering[Filtering]
 ////
 
-////
 * xref:06-network_graph.adoc[Network Graph]
 ** xref:06-network_graph.adoc#network_graph_overview[Network Graph Overview]
 ** xref:06-network_graph.adoc#network_graph_views[Network Graph Views]
 ** xref:06-network_graph.adoc#network_policy_simulator[Network Policy Simulator]
-////
 
 ////
 * xref:07-violations.adoc[Violations]
@@ -48,7 +49,6 @@
 ** xref:07-violations.adoc#policy_summary[Policy Summary]
 ////
 
-////
 * xref:08-compliance.adoc[Compliance]
 ** xref:08-compliance.adoc#compliance_dashboard[Review Compliance Dashboard]
 ** xref:08-compliance.adoc#compliance_dashboard_scan[Execute the first Compliance Scan]
@@ -61,7 +61,12 @@
 ** xref:08-compliance.adoc#acs_policy_compliance_nist[Enforce Policies that Meet Guidance for NIST Control 4.2.2]
 ** xref:08-compliance.adoc#acs_policy_compliance_nist_view[View Updated Compliance Scan Results in RHACS]
 ** xref:08-compliance.adoc#acs_policy_compliance_nist_revert[Revert the Policy Changes]
-////
+
+* xref:16-admission_control.adoc[Admission Control]
+** xref:16-admission_control.adoc#admission_control_overview[Admission Control Overview]
+** xref:16-admission_control.adoc#kubernetes_admission_control[Introduction to Kubernetes Admission Control]
+** xref:16-admission_control.adoc#admission_control_example[Admission Control in Action]
+
 
 ////
 * xref:09-configuration_management.adoc[Configuration Management]
@@ -70,6 +75,7 @@
 ////
 
 ////
+// Update this to reflect custom policies
 * xref:10-system_policies.adoc[System Policies]
 ** xref:10-system_policies.adoc#system_policies_overview[System Policies Overview]
 ** xref:10-system_policies.adoc#system_policies_example[System Policies Build and Deploy Example]
@@ -94,11 +100,9 @@
 ** xref:12-platform_configuration.adoc#access_control[RHACS Access Control]
 ////
 
-////
 * xref:13-cicd.adoc[DevSecOps Pipelines]
 ** xref:13-cicd#install_devsecops_pipelines[Installing RHACS DevSecOps Pipeline]
 ** xref:13-cicd#run_devsecops_pipelines[Running the demo of DevSecOps Pipeline]
-////
 
 ////
 * xref:14-apicli.adoc[RHACS API and CLI]

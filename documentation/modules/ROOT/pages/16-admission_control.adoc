@@ -1,0 +1,88 @@
+= RHACS Admission Control
+include::_attributes.adoc[]
+:profile: acs
+
+[#admission_control_overview]
+== Red Hat Advanced Cluster Security and Admission Control
+Red Hat Advanced Cluster Security for Kubernetes (RHACS) uses a Kubernetes admission controller to enforce policy at deployment time, and prevent critical vulnerabilities and misconfigured container images making it to production.
+
+In this lab, we'll test out some of the out-of-the-box policies provided to mitigate critical vulnerabilities using admission control. We'll also create a new RHACS policy that will be enforced via admission control, and prevent untrusted code running on our production OpenShift cluster.
+
+[#kubernetes_admission_control]
+== Introduction to Kubernetes Admission Control
+
+Admission Controllers are an important security control built-in to Kubernetes. It's a piece of code that intercepts requests to the Kubernetes API server prior to persistence of the object, but after the request is authenticated and authorized.
+
+Admission Controllers may be validating, mutating, or both. Mutating controllers may modify related objects to the requests they admit; validating controllers may not.
+
+You can read more about Admission Controllers in the https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/[Kubernetes documentation].
+
+[#acs_admission_control]
+== Red Hat Advanced Cluster Security for Kubernetes and Admission Control
+
+A validating Admission Controller is deployed to secured clusters connected to ACS. This allows security and platform engineers to block workloads that violate security policy, and provide guidance to users how to remediate these issues.
+
+To validate the admission controller is deployed, you can see the pods deployed to the `stackrox` namespace:
+
+```
+oc get pods -n stackrox
+NAME                                 READY   STATUS    RESTARTS   AGE
+admission-control-7459c749b9-2d877   1/1     Running   0          43m
+admission-control-7459c749b9-fvc2p   1/1     Running   0          43m
+admission-control-7459c749b9-z6fr8   1/1     Running   0          43m
+central-8574ff4757-hzh9z             1/1     Running   0          45m
+collector-n6g6t                      2/2     Running   0          43m
+scanner-759cd6cdd8-dg4xs             1/1     Running   0          45m
+scanner-db-59f8d6c7d4-6rcxr          1/1     Running   0          45m
+sensor-6975c84dff-77glp              1/1     Running   0          43m
+```
+Admission Control is configured during installation. You can validate the admission control configuration for this cluster by navigating to 'Platform Configuration', 'clusters', and selecting the 'production' cluster.
+
+image::admission-control/161_admission_configuration.png[ACS 1, 800]
+
+[#admission_control_example]
+== Admission Control in Action
+
+Navigate to 'Policy Configuration' and search for the `Log4Shell` policy.
+
+image::admission-control/162_log4shell_policy.png[ACS 2, 800]
+
+This policy is provided out-of-the-box with ACS, and alerts on Java workloads vulnerable to Log4Shell, a critical vulnerability present in the Java log4j logging framework.
+
+Select 'Edit Policy' from the drop-down.
+
+image::admission-control/163_policy_edits.png[ACS 3, 800]
+
+Step through the edit policy interface until you get to 'Policy Behaviour'
+
+image::admission-control/164_policy_inform.png[ACS 4, 800]
+
+There are two options for policy behaviours:
+* Inform: Policy violations are recorded in ACS, and sent through to configured SIEMs. No further action is taken.
+* Inform and enforce: Policy violations are recorded in ACS, and sent through to configured SIEMs. Other actions are taken to enforce the security policy.
+
+In this case we want to select 'Inform and Enforce'. This means that the admission controller will deny requests to create vulnerable workloads, and guidance will be provided to users how to remediate these issues.
+
+image::admission-control/165_policy_enforce.png[ACS 5, 800]
+
+Continue to step through the policy options and eventually 'Save' the policy.
+
+Now let's see what this looks like in OpenShift.
+
+Navigate to the OpenShift console and access the developer interface.
+
+Create a new project - `your-username-app-deploy`
+
+Select `+Add`, and select the `Container images` option.
+
+Specify the following to create a new workload:
+
+* Image name from external registry: `quay.io/smileyfritz/log4shell-app:v0.5`
+* Application name: log4shell-app
+* Target port: 8080
+
+Deselect `Create a route`, and select the `Create` button.
+
+Usually this would immediately deploy the workload. In this case an error is shown, indicating that the admission controller has blocked workload creation.
+
+You can see the reason why, and some guidance on how to remediate this issue.
