@@ -6,164 +6,12 @@ The OpenShift Compliance Operator allows OpenShift Container Platform administra
 
 The OpenShift Compliance Operator assesses both Kubernetes API resources and OpenShift Container Platform resources, as well as the nodes running the cluster. The Compliance Operator uses OpenSCAP, a NIST-certified tool, to scan and enforce security policies provided by the content.
 
-Red Hat Advanced Cluster Security for Kubernetes supports OpenShift Container Platform configuration compliance standards through an integration with the OpenShift Container Platform Compliance Operator. In addition, it allows you to measure and report on configuration security best practices for OpenShift Container Platform.
-
-[#compliance_dashboard]
-== Review Compliance Dashboard
-
-[#compliance_dashboard_scan]
-=== Execute the first Compliance Scan
-
-Once the RHACS is installed the first compliance scan needs to be executed to ensure that the Compliance results are available. So let's execute our first Compliance Scan.
-
-Compliance Dashboard without the First Compliance Scan 
-
-image::compliance/00_compliance_dash.png[ACS 1, 800]
-
-Run compliance scanner
-
-image::compliance/01_compliance_scan.png[ACS 2, 300]
-
-Compliance Result
-
-image::compliance/02_compliance_result.png[ACS 3, 800]
-
-TODO: Add more descriptions in compliance dashboard scan
-
-[#compliance_dashboard_review]
-=== Review the Compliance Reports in the Compliance Dashboard
-
-The compliance reports gather information for configuration, industry standards, and best practices for container-based workloads running in OpenShift.
-
-In many ways, you’ve already seen the compliance features - because they’re tied to controls that we saw in Risk, in the Network Graph, and in Policies
-
-Each standard represents a series of controls, with guidance provided by StackRox on the specific OpenShift configuration or DevOps process required to meet that control.
-
-* Click on PCI, or the PCI percentage bar, in the upper-left “Passing Standards Across Clusters” graph
-
-* Click on Control 1.1.4, “Requirements for a firewall…”
-
-image::compliance/00_compliance_pci.png[ACS 4, 800]
-
-For example, PCI-DSS has controls that refer to firewalls and DMZ - not exactly cloud-native
-
-In OpenShift, that requirement, and other isolation requirements, is met by Network Policies, and the 32% compliance score here indicates that only about one third of my deployments have correctly defined policies.
-
-* Click on Compliance tab from the left hand side menu
-
-* Click on NIST SP 800-190. Click on Control 4.1.1, “Image vulnerabilities…”
-
-* Similarly - NIST 800-190, the application containers security standard, requires a pipeline-based build approach to mitigating vulnerabilities in images.
-
-image::compliance/00_compliance_pci2.png[ACS 4_2, 800]
-
-Because we added enforcement to the CVSS >7 policy, we now meet the requirement dictated by control 4.1.1, and the 0% score changes to 100% because we now have the control in place to prevent known vulnerabilities from being deployed
-
-[#compliance_dashboard_ns]
-=== Namespace Compliance Details
-
-* Click on Compliance tab on the left hand side menu
-* Click on Namespaces in the top toolbar of the compliance page
-
-Of course, like every other report - it’s also valuable to break this data down by Clusters, Namespaces, and Deployments.
-
-Namespaces in particular - being able to see, application-by-application, or team-by-team, where the gaps in compliance are.
-
-[#compliance_dashboard_report]
-=== Evidence Export
-
-* Click on Compliance tab on the left hand side menu
-* Last thing about compliance - you’re only as compliant as you can prove!
-* Click on the Export button in the upper right to show the “Evidence as CSV” option
-
-This is the evidence export that your auditors will want to see for proof that the security controls mandated are actually in place.
-
-
 [#compliance_operator]
 == Integrating the OpenShift Compliance Operator with ACS 
 
 Red Hat Advanced Cluster Security for Kubernetes supports OpenShift Container Platform configuration compliance standards through an integration with the OpenShift Container Platform Compliance Operator. 
 
-Follow the next steps to install and integrate the Compliance Operator with Advanced Cluster Security.
-
-* Create a Namespace object YAML file by running:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]	
-----	
-oc apply -f co-ns.yaml
-----
-
-[.console-output]
-[source,bash,subs="attributes+,+macros"]	
-----	
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: openshift-compliance	
-----
-
-* Create the Compliance Operator OperatorGroup object YAML file by running:
-
-[.console-output]
-[source,bash,subs="attributes+,+macros"]	
-----	
-apiVersion: operators.coreos.com/v1
-kind: OperatorGroup
-metadata:
-  name: compliance-operator
-  namespace: openshift-compliance
-spec:
-  targetNamespaces:
-  - openshift-compliance	
-----
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]	
-----	
-oc apply -f co-og.yaml
-----
-
-* Create the Compliance Operator Subscription object YAML file by running:
-
-[.console-output]
-[source,bash,subs="attributes+,+macros"]	
-----	
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  name: compliance-operator-sub
-  namespace: openshift-compliance
-spec:
-  channel: "release-0.1"
-  installPlanApproval: Automatic
-  name: compliance-operator
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace
-----
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]	
-----	
-oc apply -f co-subs.yaml
-----
-
-* Verify the installation succeeded by inspecting the CSV file:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]	
-----	
-oc get csv -n openshift-compliance | grep compliance
-----
-
-[.console-output]
-[source,bash,subs="attributes+,+macros"]	
-----	
-oc get csv -n openshift-compliance | grep compliance
-compliance-operator.v0.1.39   Compliance Operator   0.1.39   Succeeded
-----
-
-* Verify that the Compliance Operator is up and running:
+The Compliance Operator has already been installed on OpenShift for you. You can verify this by looking at the pods runing in the `openshift-compliance` namespace:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]	
@@ -184,40 +32,14 @@ rhcos4-openshift-compliance-pp-c7b548bd-k4sz2   1/1     Running   0          3m2
 [#compliance_operator_scan]
 === Running compliance scans
 
-We now want to make sure that the nodes are scanned appropiately. For this, we’ll need a ScanSettingsBinding, this bind a profile with scan settings in order to get scans to run.
+OpenShift uses a `ScanSettingBinding` to configure settings for the Compliance Operator. In this workshop the Compliance Operator has already been configured with a `ScanSettingBinding` object that uses the "Essential Eight" profiles.
 
-* Create a ScanSettingBinding object that binds to the default ScanSetting object and scans the cluster using the cis and cis-node profiles.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]	
-----	
-oc apply -f co-scan.yaml
-----
-
-[.console-output]
-[source,bash,subs="attributes+,+macros"]	
-----	
-apiVersion: compliance.openshift.io/v1alpha1
-kind: ScanSettingBinding
-metadata:
-  name: cis-scan
-  namespace: openshift-compliance
-profiles:
-- apiGroup: compliance.openshift.io/v1alpha1
-  kind: Profile
-  name: ocp4-cis
-settingsRef:
-  apiGroup: compliance.openshift.io/v1alpha1
-  kind: ScanSetting
-  name: default
-----
-
-* Check the scansettingbinding generated:
+* Check that a ScanSettingBinding object has been created that binds to the default ScanSetting object and scans the cluster using the `rhcos4-e8` and `ocp4-e8` profiles.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]	
 ----	
-oc get scansettingbinding cis-scan -n openshift-compliance -o yaml
+oc get scansettingbinding e8-scan -n openshift-compliance -o yaml
 ----
 
 * With this the scan will start as you can check with the CRD of ComplianceScan.
