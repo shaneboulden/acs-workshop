@@ -1,0 +1,41 @@
+= RHACS Runtime threat management
+include::_attributes.adoc[]
+:profile: acs
+
+[#runtime_overview]
+== Red Hat Advanced Cluster Security for Kubernetes runtime capabilities overview
+Red Hat Advanced Cluster Security for Kubernetes (RHACS) enables security operators to manage runtime security for container workloads. RHACS can create baselines for container runtime process and network activity, and respond to specific indicators of compromise (IOCs) detected in running container images.
+
+In this lab, we'll test out some of the runtime capabilities provided with Red Hat Advanced Cluster Security for Kubernetes. We'll use some of the out-of-the-box policies to detect and mitigate runtime threats, and see how alerts are created for this activity.
+
+[#runtime_architecture]
+== Red Hat Advanced Cluster Security for Kubernetes runtime monitoring architecture
+Red Hat Advanced Cluster Security for Kubernetes (RHACS) uses an extended Berkeley Packet Filter (eBPF) probe to detect runtime activity in containers. eBPF allows sandboxed programs to run in a privileged context, such as the operating system kernel. This means that eBPF can provide observability into the kernel, in a secure and isolated way. You can read more about eBPF at ebpf.io[https://ebpf.io/].
+
+ACS deploys an eBPF program to Kubernetes nodes during installation, providing observability into container process execution and network traffic flows at runtime. This means that we don't need agents running in containers, or make any changes to container workloads at all to support runtime monitoring and threat detection.
+
+[#ebpf_development]
+== eBPF Background
+The development of eBPF can be attributed to Steven McCanne and Van Jacobson, who first published a paper on the subject in 1992. At the time, it was named the https://en.wikipedia.org/wiki/Berkeley_Software_Distribution[BSD Packet Filter] due to its development on BSD. As the application became more widely adopted, it was renamed the Berkeley Packet Filter due to its development at the https://www.lbl.gov/[Lawrence Berkeley Laboratory].
+
+BPF has been around for many years without fame, although other applications have used it. For example, https://www.tcpdump.org/[tcpdump] is https://www.tcpdump.org/papers/bpf-usenix93.pdf[built on top of BPF], and the BPF program can be viewed using the -d flag.
+```
+sudo tcpdump -d "tcp dst port 22"
+(000) ldh [12]
+(001) jeq #0x86dd jt 2 jf 6
+...
+(014) ret #262144
+(015) ret #0
+```
+It wasn’t until Alexei Starovoitov altered BPF and created the https://lwn.net/Articles/599755/[extended BPF] to leverage advances in modern hardware.
+
+Since the addition of eBPF to the Linux kernel in December 2014 (v3.18), there have been a few upgrades. eBPF can be used for non-networking purposes, such as for attaching eBPF programs to various tracepoints. Since kernel version 3.19, users can attach eBPF filters to sockets, and, since kernel version 4.1, to traffic control classifiers for the ingress and egress networking data path.
+
+eBPF works by creating filters directly in the kernel, allowing observability into container process execution and network traffic flows.
+
+image::runtime/171_bpf_overview.png[bpf 1, 800]
+
+[#ebpf_action]
+== RHACS and eBPF in action
+
+Let's try out some of the eBPF runtime monitoring provided with RHACS.

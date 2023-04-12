@@ -67,6 +67,11 @@
 ** xref:16-admission_control.adoc#kubernetes_admission_control[Introduction to Kubernetes Admission Control]
 ** xref:16-admission_control.adoc#admission_control_example[Admission Control in Action]
 
+* xref:17-runtime.adoc[Runtime Security]
+** xref:17-runtime.adoc#runtime_overview[Runtime Security Overview]
+** xref:17-runtime.adoc#runtime_architecture[RHACS Runtime Capabilities Architecture]
+** xref:17-runtime.adoc#epbf_development[eBPF Background]
+** xref:17-runtime.adoc#ebpf_action[RHACS and eBPF in Action]
 
 ////
 * xref:09-configuration_management.adoc[Configuration Management]
