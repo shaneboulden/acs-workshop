@@ -39,3 +39,105 @@ image::runtime/171_bpf_overview.png[bpf 1, 800]
 == RHACS and eBPF in action
 
 Let's try out some of the eBPF runtime monitoring provided with RHACS.
+
+Access the RHACS interface and select `Policies`. Perform a Policy search for `netcat`.
+
+image::runtime/172_runtime_policy.png[policy 1, 800]
+
+Select the `Netcat Execution Detected` policy.
+
+image::runtime/173_runtime_netcat.png[netcat 1, 800]
+
+We can see some important information about this policy:
+
+* This policy detects `netcat` execution in container workloads
+* `netcat` execution may represent attackers trying to move laterally throughout the network
+* This policy is currently enabled and set to 'Inform'. This means that it will create violations within RHACS that can be forwarded to configured SIEMs, but no action will be taken.
+* This policy applies to the runtime lifecyle for a container workload, meaning that the eBPF sensor will be used to detect `netcat` execution inside container workloads.
+
+Now that we know this policy is enabled and set to `Inform`, let's see it in action. 
+
+Navigate to the OpenShift console and observe the workloads deployed to the `devops` namespace. You should see a single workload named `log4shell-app`.
+
+image::runtime/174_log4shell_app.png[app 1, 800]
+
+Open a terminal session into the currently running pod, and try connecting to the Kubernetes API.
+```
+nc kubernetes.default.svc 443 -v
+```
+You should see that the API is reachable from the pod using `netcat`.
+
+image::runtime/175_app_nc.png[app 2, 800]
+
+Navigate back to Red Hat Advanced Cluster Security for Kubernetes and select `Violations`. Filter by `Deployment: log4shell-app` and you will see that a violation has been created for `Netcat Execution Detected`.
+
+image::runtime/176_nc_violations.png[app 3, 800]
+
+If you select the vioation you'll be able to see more information about this event:
+
+* The user who executed `netcat` within the container (in this case, the root user, UID 0)
+* The path for the binary (`/usr/bin/nc`)
+* The arguments (`kubernetes.default.svc 443 -v`)
+
+image::runtime/177_nc_events.png[nc 1, 800]
+
+We can also see information about the workload has been captured:
+
+* The deployment name (`log4shell-app`)
+* The namespace (`devops`)
+* The cluster (`production`)
+* Volumes
+* Exposed ports
+
+image::runtime/178_nc_deployments.png[nc 2, 800]
+
+image::runtime/179_nc_ports.png[nc 3, 800]
+
+Great! We can now detect suspicious process execution inside container workloads, create violations within RHACS, and forward these notifications to configured SIEMS for further analysis.
+
+[#ebpf_enforcement]
+== RHACS and runtime enforcement
+
+In the example above we looked at creating violations and notifications about suspicious process activity. RHACS also allows us to take some initial actions to contain and eradicate threats, which have been detected through runtime activity monitoring.
+
+Containment and eradication are important components of the incident response lifecycle. Containment usually involves stopping attackers moving laterally, and containing an attack. It might involve disconnecting systems from networks, quarantining infected systems, or blocking traffic. Eradication usually follows containment, and involves removing the attacker's presence from systems and networks.
+
+Using the Kubernetes API we can create automated actions that support containment and eradication. We can use the Kubernetes API to recreate workloads on the platform, removing the attacker presence while at the same destroying any attacker-controlled processes. This doesn't negate further analysis and threat hunting, but it provides an important response mechanism that we can use to mitigate further attacker access. Let's take a look.
+
+Navigate to the RHACS interface and select `Policies`. Perform a search for `netcat` and select the `Edit Policy` option on the right.
+
+image::runtime/1711_nc_edit.png[nc 1, 800]
+
+Navigate through to `Policy behavior` and update the policy:
+
+* Update the `Response method` from `Inform` to `Inform and enforce`.
+* Select the option to `Enforce on Runtime`
+
+image::runtime/1712_nc_enforce.png[nc 2, 800]
+
+Select `Next` to advance through the next screens until you reach `Review policy`. You should see on this screen that the `Response` is set to `Enforce`, and that `Enforcement` is set to `Runtime`.
+
+image::runtime/1713_nc_save.png[nc 2, 800]
+
+Select `Save`.
+
+Navigate to the OpenShift console and open a new terminal session into the running pod for the `log4shell-app` workload.
+
+image::runtime/1714_nc_terminal.png[nc 3, 800]
+
+Try and connect to the Kubernetes API using `netcat`
+
+```
+nc kubernetes.default.svc 443 -v
+```
+This time you'll notice that the terminal session is lost. `netcat` execution has been detected by the ACS eBPF sensor, and the platform has flagged that this violates the `Netcat Execution Detected` policy. In response, the container workload has been recreated, immediately destroying any attacker-controlled processes.
+
+image::runtime/1715_nc_enforced.png[nc 4, 800]
+
+Navigate to `Violations` in the RHACS console and you'll be able to see a new violation has been created for `Netcat Execution Detected`. This time you'll see that the `Enforced` column has entries for the number of enforcement actions.
+
+image::runtime/1716_nc_enforced_violations.png[nc 5, 800]
+
+Select this violation and you will now see an `Enforcement` tab has been created. This shows that the pod has been destroyed and recreated twice, in response to `netcat` execution events.
+
+image::runtime/1717_nc_enforced_tab.png[nc 6, 800]
