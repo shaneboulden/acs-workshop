@@ -73,7 +73,11 @@ Navigate to the OpenShift console and access the developer interface.
 
 Create a new project - `your-username-app-deploy`
 
+image::admission-control/166_new_project.png[app 1, 800]
+
 Select `+Add`, and select the `Container images` option.
+
+image::admission-control/1661_dev_ui.png[app 2, 800]
 
 Specify the following to create a new workload:
 
@@ -81,8 +85,14 @@ Specify the following to create a new workload:
 * Application name: log4shell-app
 * Target port: 8080
 
+image::admission-control/167_create1.png[app 3, 800]
+
 Deselect `Create a route`, and select the `Create` button.
 
+image::admission-control/168_create2.png[app 4, 800]
+
 Usually this would immediately deploy the workload. In this case an error is shown, indicating that the admission controller has blocked workload creation.
+
+image::admission-control/169_error.png[app 5, 800]
 
 You can see the reason why, and some guidance on how to remediate this issue.
