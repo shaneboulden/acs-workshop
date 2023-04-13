@@ -35,11 +35,6 @@
 ** xref:05-risk.adoc#risk_filtering[Filtering]
 ////
 
-* xref:06-network_graph.adoc[Network Graph]
-** xref:06-network_graph.adoc#network_graph_overview[Network Graph Overview]
-** xref:06-network_graph.adoc#network_graph_views[Network Graph Views]
-** xref:06-network_graph.adoc#network_policy_simulator[Network Policy Simulator]
-
 ////
 * xref:07-violations.adoc[Violations]
 ** xref:07-violations.adoc#violations_overview[Violations Dashboard Overview]
@@ -48,19 +43,6 @@
 ** xref:07-violations.adoc#violations_behaviour[Violations Behaviour]
 ** xref:07-violations.adoc#policy_summary[Policy Summary]
 ////
-
-* xref:08-compliance.adoc[Compliance]
-** xref:08-compliance.adoc#compliance_dashboard[Review Compliance Dashboard]
-** xref:08-compliance.adoc#compliance_dashboard_scan[Execute the first Compliance Scan]
-** xref:08-compliance.adoc#compliance_dashboard_review[Review the Compliance Reports in the Compliance Dashboard]
-** xref:08-compliance.adoc#compliance_dashboard_ns[Namespace Compliance Details]
-** xref:08-compliance.adoc#compliance_dashboard_report[Evidence Export]
-** xref:08-compliance.adoc#compliance_operator[Integrating Compliance Operator with RHACS ]
-** xref:08-compliance.adoc#compliance_operator_acs_review[Review Compliance Scans of the Compliance Operator in RHACS]
-** xref:08-compliance.adoc#acs_policy_compliance[Configure Policy in RHACS to Invoke Compliance related Controls]
-** xref:08-compliance.adoc#acs_policy_compliance_nist[Enforce Policies that Meet Guidance for NIST Control 4.2.2]
-** xref:08-compliance.adoc#acs_policy_compliance_nist_view[View Updated Compliance Scan Results in RHACS]
-** xref:08-compliance.adoc#acs_policy_compliance_nist_revert[Revert the Policy Changes]
 
 * xref:16-admission_control.adoc[Admission Control]
 ** xref:16-admission_control.adoc#admission_control_overview[Admission Control Overview]
@@ -72,6 +54,11 @@
 ** xref:17-runtime.adoc#runtime_architecture[RHACS Runtime Capabilities Architecture]
 ** xref:17-runtime.adoc#epbf_development[eBPF Background]
 ** xref:17-runtime.adoc#ebpf_action[RHACS and eBPF in Action]
+
+* xref:06-network_graph.adoc[Network Graph]
+** xref:06-network_graph.adoc#network_graph_overview[Network Graph Overview]
+** xref:06-network_graph.adoc#network_graph_views[Network Graph Views]
+** xref:06-network_graph.adoc#network_policy_simulator[Network Policy Simulator]
 
 ////
 * xref:09-configuration_management.adoc[Configuration Management]
@@ -108,6 +95,19 @@
 * xref:13-cicd.adoc[DevSecOps Pipelines]
 ** xref:13-cicd#install_devsecops_pipelines[Installing RHACS DevSecOps Pipeline]
 ** xref:13-cicd#run_devsecops_pipelines[Running the demo of DevSecOps Pipeline]
+
+* xref:08-compliance.adoc[Compliance]
+** xref:08-compliance.adoc#compliance_dashboard[Review Compliance Dashboard]
+** xref:08-compliance.adoc#compliance_dashboard_scan[Execute the first Compliance Scan]
+** xref:08-compliance.adoc#compliance_dashboard_review[Review the Compliance Reports in the Compliance Dashboard]
+** xref:08-compliance.adoc#compliance_dashboard_ns[Namespace Compliance Details]
+** xref:08-compliance.adoc#compliance_dashboard_report[Evidence Export]
+** xref:08-compliance.adoc#compliance_operator[Integrating Compliance Operator with RHACS ]
+** xref:08-compliance.adoc#compliance_operator_acs_review[Review Compliance Scans of the Compliance Operator in RHACS]
+** xref:08-compliance.adoc#acs_policy_compliance[Configure Policy in RHACS to Invoke Compliance related Controls]
+** xref:08-compliance.adoc#acs_policy_compliance_nist[Enforce Policies that Meet Guidance for NIST Control 4.2.2]
+** xref:08-compliance.adoc#acs_policy_compliance_nist_view[View Updated Compliance Scan Results in RHACS]
+** xref:08-compliance.adoc#acs_policy_compliance_nist_revert[Revert the Policy Changes]
 
 ////
 * xref:14-apicli.adoc[RHACS API and CLI]
